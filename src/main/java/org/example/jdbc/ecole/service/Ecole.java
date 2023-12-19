@@ -1,4 +1,4 @@
-package org.example.jdbc.ecole;
+package org.example.jdbc.ecole.service;
 
 import org.example.jdbc.ecole.utils.ConnectionUtil;
 
@@ -36,10 +36,9 @@ public class Ecole {
             int nbRows = preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             System.out.println("nombre de ligne => " + nbRows);
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 System.out.println(resultSet.getInt(1));
             }
-
 
 
         } catch (SQLException e) {
@@ -72,8 +71,8 @@ public class Ecole {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(request);
 
-            while (resultSet.next()){
-                System.out.println(resultSet.getInt("id")+") "+resultSet.getString("nom")+" "+resultSet.getString("prenom")+" " + resultSet.getInt("nb_classe") + " " + resultSet.getString("date_diplome"));
+            while (resultSet.next()) {
+                System.out.println(resultSet.getInt("id") + ") " + resultSet.getString("nom") + " " + resultSet.getString("prenom") + " " + resultSet.getInt("nb_classe") + " " + resultSet.getString("date_diplome"));
             }
             statement.close();
 
@@ -94,14 +93,13 @@ public class Ecole {
     }
 
 
-
     public static void allStudentsByClass(int classNb) {
 
         String query = "SELECT id, nom, prenom, date_diplome FROM etudiants WHERE nb_classe = ?";
 
         try (
                 Connection connection = ConnectionUtil.getMySqlConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             System.out.println("connexion ok !");
 
@@ -123,7 +121,7 @@ public class Ecole {
 
         try (
                 Connection connection = ConnectionUtil.getMySqlConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, studentId);
             int affectedRows = preparedStatement.executeUpdate();
@@ -135,7 +133,7 @@ public class Ecole {
             }
 
         } catch (SQLException e) {
-            System.out.println( e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 

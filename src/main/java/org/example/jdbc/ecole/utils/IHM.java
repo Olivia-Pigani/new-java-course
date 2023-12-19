@@ -1,7 +1,7 @@
-package org.example.jdbc.ecole;
+package org.example.jdbc.ecole.utils;
 
-import java.sql.Connection;
-import java.sql.Statement;
+import org.example.jdbc.ecole.service.Ecole;
+
 import java.util.Scanner;
 
 public class IHM {
