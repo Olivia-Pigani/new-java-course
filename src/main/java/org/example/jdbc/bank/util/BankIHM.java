@@ -1,7 +1,9 @@
 package org.example.jdbc.bank.util;
 
 import org.example.jdbc.bank.model.Client;
+import org.example.jdbc.bank.model.CompteBancaire;
 import org.example.jdbc.bank.service.ClientService;
+import org.example.jdbc.bank.service.CompteService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ public class BankIHM {
 
 
     private static ClientService clientService = new ClientService();
+    private static CompteService compteService = new CompteService();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void start() {
@@ -103,31 +106,95 @@ public class BankIHM {
 
     }
 
+    private static void deleteAnAccount() {
+
+        System.out.println(" quel est le numéro de de compte ?");
+        int numeroDeCompte = scanner.nextInt();
+        scanner.nextLine();
+        CompteBancaire compteBancaire = compteService.getCompte(numeroDeCompte);
+        if (compteBancaire != null) {
+
+           compteService.deleteCompte(numeroDeCompte);
+
+
+        } else {
+            System.out.println("aucun compte avec ce numéro ! ");
+        }
+
+    }
+
+    private static void displayOneAccount() {
+
+
+        System.out.println(" quel est l'id du client ?");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        Client client = clientService.getClient(id);
+        if (client != null) {
+
+            System.out.println("Quel est le numéro du compte ?");
+            int numeroAccount = scanner.nextInt();
+            scanner.nextLine();
+            if (numeroAccount != null) {
+                List<CompteBancaire> compteBancaires = compteService.getCompte(numeroAccount);
+                for (CompteBancaire compte : compteBancaires
+                ) {
+                    System.out.println(compte);
+                }
+
+            } else {
+                System.out.println(" Aucun compte avec ce numéro ! ");
+            }
+
+
+        } else {
+            System.out.println("aucun client avec cet id ! ");
+        }
+
+
+    }
+
+    private static void displayAllAccountsOfAClient() {
+
+        System.out.println(" quel est l'id du client ?");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        Client client = clientService.getClient(id);
+        if (client != null) {
+
+            List<CompteBancaire> compteBancaires = compteService.getAllComptes(id);
+            for (CompteBancaire compte : compteBancaires
+            ) {
+                System.out.println(compte);
+            }
+
+
+        } else {
+            System.out.println("aucun client avec cet id ! ");
+        }
+    }
+
 //    ACCOUNT
 
     private static void produceAnAccount() {
 
 
+        System.out.println(" quel est l'id du client ?");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        Client client = clientService.getClient(id);
+        if (client != null) {
+            System.out.println("quel est le solde de départ ? ");
+            double startCash = scanner.nextDouble();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            compteService.createCompte();
+        } else {
+            System.out.println("aucun client avec cet id ! ");
+        }
 
 
     }
+
 
 //    CLIENT
 
