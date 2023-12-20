@@ -56,7 +56,7 @@ public class ClientDAO extends BaseDAO<Client> {
         Client client = null;
         Map<Integer, CompteBancaire> accounts = new HashMap<>();
 
-        String request = "SELECT clients.*, compte_bancaires.id, compte_bancaires.solde " +
+        String request = "SELECT * " +
                 "FROM clients " +
                 "LEFT JOIN compte_bancaires ON compte_bancaires.id_clients = clients.id " +
                 "WHERE clients.id = ?";
@@ -109,5 +109,6 @@ public class ClientDAO extends BaseDAO<Client> {
                      );
             result.add(client);
         }
+        System.out.println(result);
         return result;    }
 }
