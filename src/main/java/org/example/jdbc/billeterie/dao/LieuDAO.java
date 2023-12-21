@@ -1,8 +1,9 @@
-package org.example.dao;
+package org.example.jdbc.billeterie.dao;
 
 import jdk.jshell.spi.ExecutionControl;
 import org.example.entities.Evenement;
 import org.example.entities.Lieu;
+import org.example.jdbc.billeterie.dao.BaseDAO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LieuDAO extends org.example.dao.BaseDAO<Lieu> {
+public class LieuDAO extends BaseDAO<Lieu> {
 
 
     protected LieuDAO(Connection connection) {
@@ -59,7 +60,7 @@ public class LieuDAO extends org.example.dao.BaseDAO<Lieu> {
     }
 
     @Override
-    public boolean save(Lieu element) throws SQLException, ExecutionControl.NotImplementedException {
+    public void save(Lieu element) throws SQLException, ExecutionControl.NotImplementedException {
         request = "INSERT INTO lieu (nom,adresse,capacite) VALUES (?,?,?)";
 
 
@@ -80,7 +81,6 @@ public class LieuDAO extends org.example.dao.BaseDAO<Lieu> {
 
 
         }
-        return nbRows == 1;
     }
 
     @Override

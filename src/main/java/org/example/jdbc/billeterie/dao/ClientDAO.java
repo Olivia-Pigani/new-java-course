@@ -1,4 +1,4 @@
-package org.example.dao;
+package org.example.jdbc.billeterie.dao;
 
 import jdk.jshell.spi.ExecutionControl;
 import org.example.entities.Client;
@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientDAO extends org.example.dao.BaseDAO<Client> {
+public class ClientDAO extends BaseDAO<Client> {
 
     protected ClientDAO(Connection connection) {
         super(connection);
@@ -24,8 +24,6 @@ public class ClientDAO extends org.example.dao.BaseDAO<Client> {
 
         try {
 
-            _connection.setAutoCommit(false);
-
 
             request = "SELECT * FROM clients";
             statement = _connection.prepareStatement(request);
@@ -38,18 +36,10 @@ public class ClientDAO extends org.example.dao.BaseDAO<Client> {
                 clients.add(client);
 
 
-                _connection.commit();
-
             }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            try {
-                _connection.rollback();
-                System.out.println("transaction annulée ! ");
-            } catch (SQLException er) {
-                System.out.println("erruer lors de l'annulation de la transaction ! " + er.getMessage());
-            }
 
         } finally {
             DatabaseManager.closeConnection(); // utiliser le service à la place
@@ -65,7 +55,6 @@ public class ClientDAO extends org.example.dao.BaseDAO<Client> {
 
         try {
 
-            _connection.setAutoCommit(false);
 
             request = "SELECT * FROM clients WHERE id = ?";
             statement = _connection.prepareStatement(request);
@@ -80,19 +69,10 @@ public class ClientDAO extends org.example.dao.BaseDAO<Client> {
 
             }
 
-            _connection.commit();
 
         } catch (Exception e) {
             System.out.println("erreur lors de la selection du client !");
 
-            try {
-                _connection.rollback();
-                System.out.println("annulation de la transaction de la selection du client ! ");
-            } catch (SQLException er) {
-                System.out.println("erreur lors de l'anuation de la transation ! " + er.getMessage());
-            } finally {
-                DatabaseManager.closeConnection();
-            }
 
         }
         return client;
@@ -100,46 +80,72 @@ public class ClientDAO extends org.example.dao.BaseDAO<Client> {
     }
 
     @Override
-    public boolean save(Client element) throws SQLException, ExecutionControl.NotImplementedException {
-        request = "INSERT INTO clients (nom,prenom,email) VALUES (?,?,?)";
-        statement = _connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
-        statement.setString(1, element.getNom());
-        statement.setString(2, element.getPrenom());
-        statement.setString(3, element.getEmail());
-        int nbRows = statement.executeUpdate();
-        resultSet = statement.getGeneratedKeys();
+    public void save(Client element) throws SQLException, ExecutionControl.NotImplementedException {
 
-        if (resultSet.next()) {
-            try {
+        try {
+
+            _connection.setAutoCommit(false);
+
+
+            request = "INSERT INTO clients (nom,prenom,email) VALUES (?,?,?)";
+            statement = _connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, element.getNom());
+            statement.setString(2, element.getPrenom());
+            statement.setString(3, element.getEmail());
+            int nbRows = statement.executeUpdate();
+            resultSet = statement.getGeneratedKeys();
+
+            if (resultSet.next() && nbRows==1) {
+                _connection.commit();
                 element.setId(resultSet.getInt(1));
-            } catch (Exception e) {
-                System.out.println("erreur lors de la production de client");
+            } else {
+                _connection.rollback();
+                System.out.println("transaction annulée ! ");
             }
 
-
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            DatabaseManager.closeConnection();
         }
-        return nbRows == 1;
+
+
 
 
     }
 
     @Override
-    public boolean update(Client element) throws SQLException, ExecutionControl.NotImplementedException {
+    public void update(Client element) throws SQLException, ExecutionControl.NotImplementedException {
         Client existingClient = getById(element.getId());
 
         if (existingClient == null) {
-            return false;
+            System.out.println("aucun client avec un tel id !");
         }
 
-        request = "UPDATE clients SET nom = ?, prenom = ?, email = ? WHERE id = ?";
-        statement = _connection.prepareStatement(request);
-        statement.setString(1, element.getNom());
-        statement.setString(2, element.getPrenom());
-        statement.setString(3, element.getEmail());
-        statement.setInt(4, element.getId());
+        try {
+            _connection.setAutoCommit(false);
 
-        int nbRows = statement.executeUpdate();
-        return nbRows == 1;
+            request = "UPDATE clients SET nom = ?, prenom = ?, email = ? WHERE id = ?";
+            statement = _connection.prepareStatement(request);
+            statement.setString(1, element.getNom());
+            statement.setString(2, element.getPrenom());
+            statement.setString(3, element.getEmail());
+            statement.setInt(4, element.getId());
+
+            int nbRows = statement.executeUpdate();
+
+            if (resultSet.next() && nbRows==1){
+                _connection.commit();
+                System.out.println("la transaction s'est bien déroulée  ! ");
+            }
+
+
+        }catch (Exception e){
+            System.out.println(" il y a une erreur lors de la mise à jour du client ! ");
+        }finally {
+            DatabaseManager.closeConnection();
+        }
+
     }
 
     @Override

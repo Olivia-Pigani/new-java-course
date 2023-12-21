@@ -1,4 +1,4 @@
-package org.example.dao;
+package org.example.jdbc.billeterie.dao;
 
 import jdk.jshell.spi.ExecutionControl;
 import org.example.entities.Evenement;
@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EvenementDAO extends org.example.dao.BaseDAO<Evenement> {
+public class EvenementDAO extends BaseDAO<Evenement> {
 
 
     protected EvenementDAO(Connection connection) {

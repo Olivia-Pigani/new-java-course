@@ -1,4 +1,4 @@
-package org.example.dao;
+package org.example.jdbc.billeterie.dao;
 
 import jdk.jshell.spi.ExecutionControl;
 import org.example.utils.connection.DatabaseManager;
@@ -22,9 +22,9 @@ public abstract class BaseDAO <T>{
 
 public abstract List<T> get() throws SQLException, ExecutionControl.NotImplementedException;
 public abstract T getById(int id) throws SQLException, ExecutionControl.NotImplementedException;
-public abstract boolean save(T element) throws SQLException, ExecutionControl.NotImplementedException;
-public abstract boolean update(T element) throws SQLException, ExecutionControl.NotImplementedException;
-public abstract boolean delete(T element) throws SQLException, ExecutionControl.NotImplementedException;
+public abstract void save(T element) throws SQLException, ExecutionControl.NotImplementedException;
+public abstract void update(T element) throws SQLException, ExecutionControl.NotImplementedException;
+public abstract void delete(T element) throws SQLException, ExecutionControl.NotImplementedException;
 
 
 
