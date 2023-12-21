@@ -149,17 +149,43 @@ public class ClientDAO extends BaseDAO<Client> {
     }
 
     @Override
-    public boolean delete(Client element) throws SQLException, ExecutionControl.NotImplementedException {
+    public void delete(Client element) throws SQLException, ExecutionControl.NotImplementedException {
         Client client = getById(element.getId());
-        if (client == null) {
-            return false;
-        }
-        request = "DELETE FROM clients WHERE id = ?";
-        statement = _connection.prepareStatement(request);
-        statement.setInt(1, element.getId());
-        int nbRows = statement.executeUpdate();
 
-        return nbRows == 1;
+
+
+
+        if (client == null) {
+            System.out.println("pas de client avec un tel id ! ");
+        }
+        try {
+
+
+            _connection.setAutoCommit(false);
+
+
+            request = "DELETE FROM clients WHERE id = ?";
+            statement = _connection.prepareStatement(request);
+            statement.setInt(1, element.getId());
+            int nbRows = statement.executeUpdate();
+
+            if (nbRows==1 && resultSet.next()){
+                _connection.commit();
+                System.out.println("la transaction s'est bien déroulée ! ");
+            }else {
+                _connection.rollback();
+                System.out.println("la transaction a été annulée ! ");
+            }
+
+
+        }catch (Exception e){
+            System.out.println(" il y a eu une erreur lors de la transaction du delete ! ");
+        }finally {
+            DatabaseManager.closeConnection();
+        }
+
+
+
 
 
     }
