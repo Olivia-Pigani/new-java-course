@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import java.util.List;
 
-public class CategoryDao implements org.example.dao.CategoryDao {
+public class CategoryDaoImpl implements org.example.dao.CategoryDao {
 
     private EntityManagerFactory entityManagerFactory;
     @Override

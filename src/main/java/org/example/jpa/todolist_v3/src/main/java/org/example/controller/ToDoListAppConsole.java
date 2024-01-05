@@ -1,7 +1,9 @@
 package org.example.controller;
 
+import org.example.impl.CategoryDaoImpl;
 import org.example.impl.PersonDAOImpl;
 import org.example.impl.TaskDAOImpl;
+import org.example.model.Category;
 import org.example.model.Person;
 import org.example.model.Task;
 import org.example.model.TaskInfo;
@@ -19,6 +21,9 @@ public class ToDoListAppConsole {
     private static TaskDAOImpl taskDAO;
 
     private static PersonDAOImpl personDAO;
+
+
+    private static CategoryDaoImpl categoryDao;
 
     public static void main() {
         entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
@@ -39,7 +44,7 @@ public class ToDoListAppConsole {
             System.out.println("7. Supprimer une personne");
 
             System.out.println("8. Ajouter une catégorie");
-            System.out.println("8. Supprimer une catégorie");
+            System.out.println("9. Supprimer une catégorie");
             System.out.println("10. Afficher les tâches d'une catégorie");
             System.out.println("11. Ajouter une taches à une catégorie");
             System.out.println("12. Supprimer une taches à une catégorie");
@@ -74,6 +79,17 @@ public class ToDoListAppConsole {
                 case 7:
                     deleteUser(scanner);
                     break;
+
+                case 8:
+                    addACategory(scanner);
+                    break;
+
+                case 9:
+                    deleteACategory(scanner);
+                    break;
+
+
+
                 case 0:
                     System.out.println("Bye");
                     entityManagerFactory.close();
@@ -86,11 +102,46 @@ public class ToDoListAppConsole {
         }while (choice != 0);
     }
 
+    private static void deleteACategory(Scanner scanner) {
+
+        try {
+            System.out.println("QueL est l'id de la categorie souhaitez vous delete ?");
+            Long categoryId = scanner.nextLong();
+            scanner.nextLine();
+
+            Category categoryToRemove = categoryDao.getOneCategoryById(categoryId);
+
+            if (categoryToRemove != null){
+                categoryDao.deleteCategory(categoryId);
+            }
+
+            System.out.println(" la catégorie a été enlevée ! ");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private static void addACategory(Scanner scanner) {
+        System.out.println("Quel est le nom de la catégorie ?");
+        String categoryName = scanner.nextLine();
+
+        Category newCategory = new Category();
+        newCategory.setName(categoryName);
+
+        categoryDao.addCategory(newCategory);
+
+
+
+
+    }
+
     private static void addTask(Scanner scanner){
-        System.out.println("Entrer le titre de la tâche : ");
+        System.out.println("Entrez le titre de la tâche : ");
         String title = scanner.nextLine();
 
-        System.out.println("Entrer la description de la tâche : ");
+        System.out.println("Entrez la description de la tâche : ");
         String description = scanner.nextLine();
 
         System.out.println("Date limite de la tâche : (dd.MM.yyyy)");

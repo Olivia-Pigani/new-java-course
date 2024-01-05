@@ -1,6 +1,7 @@
 package org.example.impl;
 
 import org.example.dao.TaskDAO;
+import org.example.model.Category;
 import org.example.model.Person;
 import org.example.model.Task;
 
@@ -118,8 +119,29 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
 
-   //todo
-   // addTaskByCategory deleteOneTaskByCategory getallTaskByCategory
+    public void boolean addTaskByCategory(Task task, Long categoryId){
+        // find category   if yes
+        // add task
+
+
+    }
+
+    public void boolean deleteOneTaskByCategory(Long taskId, Long categoryId){
+        // find category and task   if yes
+        // delete
+
+
+    }
+
+    public void boolean getallTaskByCategory( Long categoryId){
+        // find category    if yes
+        // getallTask
+        // getallTask
+
+
+    }
+
+//todo
 
 
 }
