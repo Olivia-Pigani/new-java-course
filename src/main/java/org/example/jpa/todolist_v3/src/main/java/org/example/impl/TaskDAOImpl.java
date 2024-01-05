@@ -1,5 +1,6 @@
 package org.example.impl;
 
+import org.example.dao.CategoryDao;
 import org.example.dao.TaskDAO;
 import org.example.model.Category;
 import org.example.model.Person;
@@ -13,11 +14,26 @@ import java.util.List;
 public class TaskDAOImpl implements TaskDAO {
 
     private EntityManagerFactory entityManagerFactory;
+    private CategoryDaoImpl categoryDao;
 
     public TaskDAOImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
+
+
+    public void  addTaskByCategory(Task task, Long categoryId){
+        // find category   if yes
+        // add task
+
+        if(categoryDao.getOneCategoryById(categoryId)){
+            addTask(task);
+        }
+
+
+
+
+    }
     @Override
     public boolean addTask(Task task) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -119,12 +135,6 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
 
-    public void boolean addTaskByCategory(Task task, Long categoryId){
-        // find category   if yes
-        // add task
-
-
-    }
 
     public void boolean deleteOneTaskByCategory(Long taskId, Long categoryId){
         // find category and task   if yes
