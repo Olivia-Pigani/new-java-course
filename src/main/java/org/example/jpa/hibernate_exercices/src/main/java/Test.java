@@ -141,24 +141,32 @@ public class Test {
         }
 
         // Afficher la liste des produits achetés entre deux dates.
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+       // SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
-        String dateOneStr = "10-02-1995";
-        String dateTwoStr = "10-02-2011";
-        Date dateOne = formatter.parse(dateOneStr);
-        Date dateTwo = formatter.parse(dateTwoStr);
+        try {
+            String dateOneStr = "10-02-1995";
+            String dateTwoStr = "10-02-2011";
+            Date dateOne = formatter.parse(dateOneStr);
+            Date dateTwo = formatter.parse(dateTwoStr);
 
-        Query<Produit> produitBetweenDate = session.createQuery("from Produit where dateAchat > :dateOne AND dateAchat < :dateTwo");
-        produitBetweenDate.setParameter("dateOne", dateOne);
-        produitBetweenDate.setParameter("dateTwo", dateTwo);
+            Query<Produit> produitBetweenDate = session.createQuery("from Produit where dateAchat > :dateOne AND dateAchat < :dateTwo");
+            produitBetweenDate.setParameter("dateOne", dateOne);
+            produitBetweenDate.setParameter("dateTwo", dateTwo);
 
-        for (Produit p : produitBetweenDate.list()
-        ) {
-            System.out.println(p);
+            for (Produit p : produitBetweenDate.list()
+            ) {
+                System.out.println(p);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+
+            sessionFactory.close();
         }
 
 
-        sessionFactory.close();
+
 
 
     }
