@@ -1,3 +1,4 @@
+import dao.ProduitDAO;
 import models.Produit;
 import service.ProduitService;
 
@@ -7,21 +8,18 @@ import java.util.List;
 import java.util.Scanner;
 
     public class IHM {
-
-
     private Scanner scanner = new Scanner(System.in);
-
+    private ProduitDAO produitDAO;
     private ProduitService produitService;
     private int choice;
-
     private boolean run = true;
 
+        public IHM(ProduitDAO produitDAO, ProduitService produitService) {
+            this.produitDAO = produitDAO;
+            this.produitService = produitService;
+        }
 
-    public IHM(ProduitService produitService) {
-        this.produitService = produitService;
-    }
-
-    public void printMenu() {
+        public void printMenu() {
         while (run) {
 
             System.out.println("=== MENU ===");
@@ -117,8 +115,8 @@ import java.util.Scanner;
 
     private void averageProductPrice() {
         try {
-            List<Produit> produitList = produitService.getAll();
-            produitService.averageProductPrice(produitList);
+           double averagePrice =  produitService.averageProductPrice();
+            System.out.println("the average price is " + averagePrice);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -255,7 +253,6 @@ import java.util.Scanner;
             Produit newProduct = new Produit(brand,reference,realDate,price,stock);
 
             produitService.add(newProduct);
-
 
 
         }catch (Exception e){
