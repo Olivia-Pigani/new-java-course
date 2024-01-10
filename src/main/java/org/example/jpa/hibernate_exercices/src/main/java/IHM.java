@@ -41,6 +41,20 @@ import java.util.Scanner;
             System.out.println("10. get product list by brand");
             System.out.println("11. delete product by brand");
 
+
+            // exercice5
+            System.out.println("12. add an image to a product");
+            System.out.println("13. add a commentary to a product");
+            System.out.println("14. get all product with a note >= 4 ");
+
+            //exercice6
+            System.out.println("15. produce a command to One or Many product");
+            System.out.println("16. get all command");
+            System.out.println("17. get today's command");
+
+
+
+
             choice = scanner.nextInt();
             scanner.nextLine();
             switch (choice) {

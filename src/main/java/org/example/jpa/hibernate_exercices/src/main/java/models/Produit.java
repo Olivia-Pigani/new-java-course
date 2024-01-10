@@ -3,7 +3,9 @@ package models;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "produits")
@@ -23,6 +25,23 @@ public class Produit {
     private double prix;
 
     private int stock;
+
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Image> imageList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Commentaire> commentaireList = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "produit_commande",
+    joinColumns = @JoinColumn(name = "produit_id"),
+    inverseJoinColumns = @JoinColumn(name = "commande_id"))
+    private List<Commande> commandeList = new ArrayList<>();
+
+
+
 
     public Produit() {
     }
