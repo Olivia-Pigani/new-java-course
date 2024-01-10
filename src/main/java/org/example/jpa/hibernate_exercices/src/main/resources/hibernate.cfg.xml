@@ -5,6 +5,12 @@
 
 <hibernate-configuration>
     <session-factory>
-<mapping class="models.Produit"/>
+        <mapping class="models.Produit"/>
+        <mapping class="models.Adresse"/>
+        <mapping class="models.Commande"/>
+        <mapping class="models.Commentaire"/>
+        <mapping class="models.Image"/>
+
+
     </session-factory>
 </hibernate-configuration>

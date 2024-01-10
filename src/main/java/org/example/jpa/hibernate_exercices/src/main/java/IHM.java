@@ -53,7 +53,7 @@ import java.util.Scanner;
             System.out.println("17. get today's command");
 
 
-
+            System.out.println("18. Quit");
 
             choice = scanner.nextInt();
             scanner.nextLine();
@@ -91,7 +91,38 @@ import java.util.Scanner;
                 case 11:
                     deleteProductByBrand();
                     break;
+
+
+
                 case 12:
+                    addImageToProduct();
+                    break;
+                    case 13:
+                    addCommentaryToProduct();
+                    break;
+                    case 14:
+                    productsOverScore4();
+                    break;
+                    case 15:
+                    produceCommandWithOneOrManyProducts();
+                    break;
+                    case 16:
+                    getAllCommand();
+                    break;
+                    case 17:
+                    getTodayCommand();
+                    break;
+
+
+                case 18:
+                    produceFullCommand();
+                    break;
+
+
+
+
+
+                case 19:
                     closeAll();
                     run = false;
                     break;
@@ -102,6 +133,28 @@ import java.util.Scanner;
             }
         }
     }
+
+        private void produceFullCommand() {
+
+        }
+
+        private void getTodayCommand() {
+        }
+
+        private void getAllCommand() {
+        }
+
+        private void produceCommandWithOneOrManyProducts() {
+        }
+
+        private void productsOverScore4() {
+        }
+
+        private void addCommentaryToProduct() {
+        }
+
+        private void addImageToProduct() {
+        }
 
         private void closeAll() {
             scanner.close();

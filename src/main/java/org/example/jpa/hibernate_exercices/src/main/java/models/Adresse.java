@@ -19,7 +19,7 @@ public class Adresse {
 
     private int codePostal;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Commande commande;
 
 

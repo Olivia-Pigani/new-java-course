@@ -21,6 +21,7 @@ public class Commentaire {
 
     private float note;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "produit_id")
     private Produit produit;
 }

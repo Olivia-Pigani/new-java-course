@@ -20,7 +20,7 @@ public class Commande {
 
     private LocalDate dateCommande;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "commandeList")
     List<Produit> produitList = new ArrayList<>();
 
     @OneToOne(mappedBy = "commande")

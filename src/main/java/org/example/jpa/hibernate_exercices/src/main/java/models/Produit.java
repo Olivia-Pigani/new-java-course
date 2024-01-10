@@ -28,13 +28,13 @@ public class Produit {
 
 
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produit")
     private List<Image> imageList = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "produit")
     private List<Commentaire> commentaireList = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "produit_commande",
     joinColumns = @JoinColumn(name = "produit_id"),
     inverseJoinColumns = @JoinColumn(name = "commande_id"))
