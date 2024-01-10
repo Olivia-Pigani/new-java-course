@@ -14,9 +14,9 @@ import java.util.Scanner;
     private int choice;
     private boolean run = true;
 
-        public IHM(ProduitDAO produitDAO, ProduitService produitService) {
-            this.produitDAO = produitDAO;
-            this.produitService = produitService;
+        public IHM() {
+            produitDAO = new ProduitDAO();
+            produitService = new ProduitService(produitDAO);
         }
 
         public void printMenu() {
@@ -77,6 +77,10 @@ import java.util.Scanner;
                 case 11:
                     deleteProductByBrand();
                     break;
+                case 12:
+                    closeAll();
+                    run = false;
+                    break;
                 default:
                     System.out.println("wrong input, retry ! ");
                     printMenu();
@@ -85,15 +89,17 @@ import java.util.Scanner;
         }
     }
 
-    private void deleteProductByBrand() {
+        private void closeAll() {
+            scanner.close();
+        }
+
+        private void deleteProductByBrand() {
         try {
             System.out.println("What is the id of the brand ? ");
             String brand = scanner.nextLine();
             produitService.deleteProductByBrand(brand);
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
 
     }
@@ -106,8 +112,6 @@ import java.util.Scanner;
             return productsByBrand;
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
 
         return null;
@@ -119,8 +123,6 @@ import java.util.Scanner;
             System.out.println("the average price is " + averagePrice);
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
 
 
@@ -143,8 +145,6 @@ import java.util.Scanner;
             return produitList;
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
 
         return null;
@@ -165,8 +165,6 @@ import java.util.Scanner;
            return produitList;
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
         return null;
 
@@ -186,8 +184,6 @@ import java.util.Scanner;
             return produitList;
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
         return null;
     }
@@ -201,8 +197,6 @@ import java.util.Scanner;
             return produit;
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
         return null;
 
@@ -215,8 +209,6 @@ import java.util.Scanner;
         }catch (Exception e){
             e.printStackTrace();
 
-        }finally {
-            scanner.close();
         }
         return null;
     }
@@ -229,8 +221,6 @@ import java.util.Scanner;
             produitService.delete(id);
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
     }
 
@@ -257,8 +247,6 @@ import java.util.Scanner;
 
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
 
     }
