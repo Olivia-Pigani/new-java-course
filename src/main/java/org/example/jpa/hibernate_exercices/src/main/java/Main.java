@@ -1,6 +1,3 @@
-import dao.ProduitDAO;
-import service.ProduitService;
-
 public class Main {
 
 

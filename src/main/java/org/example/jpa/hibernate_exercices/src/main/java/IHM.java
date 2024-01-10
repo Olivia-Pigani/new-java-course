@@ -1,7 +1,12 @@
-import dao.ProduitDAO;
+import dao.*;
+import models.Commande;
+import models.Commentaire;
+import models.Image;
 import models.Produit;
-import service.ProduitService;
+import service.CommandeServiceimpl;
+import service.ProduitServiceimpl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,13 +15,26 @@ import java.util.Scanner;
     public class IHM {
     private Scanner scanner = new Scanner(System.in);
     private ProduitDAO produitDAO;
-    private ProduitService produitService;
+    private ImageDAO imageDAO;
+    private CommentaireDAO commentaireDAO;
+
+    private AdresseDAO adresseDAO;
+
+    private CommandeDAO commandeDAO;
+
+    private ProduitServiceimpl produitService;
+
+    private CommandeServiceimpl commandeService;
     private int choice;
     private boolean run = true;
 
         public IHM() {
             produitDAO = new ProduitDAO();
-            produitService = new ProduitService(produitDAO);
+            adresseDAO = new AdresseDAO();
+            commandeDAO = new CommandeDAO();
+            commentaireDAO = new CommentaireDAO();
+            produitService = new ProduitServiceimpl(produitDAO,imageDAO,commentaireDAO);
+            commandeService = new CommandeServiceimpl(adresseDAO,commandeDAO);
         }
 
         public void printMenu() {
@@ -51,6 +69,7 @@ import java.util.Scanner;
             System.out.println("15. produce a command to One or Many product");
             System.out.println("16. get all command");
             System.out.println("17. get today's command");
+            System.out.println("18. produce full command");
 
 
             System.out.println("18. Quit");
@@ -115,6 +134,10 @@ import java.util.Scanner;
 
 
                 case 18:
+                    //Link
+                    produceFullProduct();
+                    break;
+                case 19:
                     produceFullCommand();
                     break;
 
@@ -122,7 +145,7 @@ import java.util.Scanner;
 
 
 
-                case 19:
+                case 20:
                     closeAll();
                     run = false;
                     break;
@@ -135,13 +158,44 @@ import java.util.Scanner;
     }
 
         private void produceFullCommand() {
+        }
+
+        private void produceFullProduct(){
+
+            List<Produit> produitList = produitService.getAll();
+            List<Image> imageList  = produitService.getAllImage();
+            List<Commentaire> commentaireList = produitService.getAllCom();
+
+            // linking
+            System.out.println("Select id of the product");
+            int idProduct = scanner.nextInt();
+            scanner.nextLine();
+            Produit produit = produitService.getById(idProduct);
+
+            System.out.println("Select id of the image");
+            int idImage = scanner.nextInt();
+            scanner.nextLine();
+            Image image = produitService.getByIdImage(idImage);
+
+            System.out.println("Select id of the commentary");
+            int idCommentary = scanner.nextInt();
+            scanner.nextLine();
+            Commentaire commentaire = produitService.getByIdCom(idCommentary);
+
+
+
+            Commande newCommand = new Commande();
+
+
 
         }
+
+       
 
         private void getTodayCommand() {
         }
 
-        private void getAllCommand() {
+        private List<Commande> getAllCommand() {
         }
 
         private void produceCommandWithOneOrManyProducts() {
@@ -309,7 +363,6 @@ import java.util.Scanner;
 
             Produit newProduct = new Produit(brand,reference,realDate,price,stock);
 
-            produitService.add(newProduct);
 
 
         }catch (Exception e){
@@ -317,6 +370,18 @@ import java.util.Scanner;
         }
 
     }
+
+
+    // CRUD IMAGE
+
+
+
+
+
+        //CRUD commentary
+
+
+
 
 
 }

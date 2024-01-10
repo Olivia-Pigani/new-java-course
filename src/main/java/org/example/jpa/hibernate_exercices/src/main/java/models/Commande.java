@@ -26,4 +26,6 @@ public class Commande {
     @OneToOne(mappedBy = "commande")
     private Adresse adresseLivraison;
 
+
+
 }
