@@ -1,3 +1,5 @@
+package controller;
+
 import dao.*;
 import models.Commande;
 import models.Commentaire;
@@ -12,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-    public class IHM {
+public class IHM {
     private Scanner scanner = new Scanner(System.in);
     private ProduitDAO produitDAO;
     private ImageDAO imageDAO;
@@ -28,16 +30,16 @@ import java.util.Scanner;
     private int choice;
     private boolean run = true;
 
-        public IHM() {
-            produitDAO = new ProduitDAO();
-            adresseDAO = new AdresseDAO();
-            commandeDAO = new CommandeDAO();
-            commentaireDAO = new CommentaireDAO();
-            produitService = new ProduitServiceimpl(produitDAO,imageDAO,commentaireDAO);
-            commandeService = new CommandeServiceimpl(adresseDAO,commandeDAO);
-        }
+    public IHM() {
+        produitDAO = new ProduitDAO();
+        adresseDAO = new AdresseDAO();
+        commandeDAO = new CommandeDAO();
+        commentaireDAO = new CommentaireDAO();
+        produitService = new ProduitServiceimpl(produitDAO, imageDAO, commentaireDAO);
+        commandeService = new CommandeServiceimpl(adresseDAO, commandeDAO);
+    }
 
-        public void printMenu() {
+    public void printMenu() {
         while (run) {
 
             System.out.println("=== MENU ===");
@@ -112,23 +114,22 @@ import java.util.Scanner;
                     break;
 
 
-
                 case 12:
                     addImageToProduct();
                     break;
-                    case 13:
+                case 13:
                     addCommentaryToProduct();
                     break;
-                    case 14:
+                case 14:
                     productsOverScore4();
                     break;
-                    case 15:
+                case 15:
                     produceCommandWithOneOrManyProducts();
                     break;
-                    case 16:
+                case 16:
                     getAllCommand();
                     break;
-                    case 17:
+                case 17:
                     getTodayCommand();
                     break;
 
@@ -140,9 +141,6 @@ import java.util.Scanner;
                 case 19:
                     produceFullCommand();
                     break;
-
-
-
 
 
                 case 20:
@@ -157,69 +155,75 @@ import java.util.Scanner;
         }
     }
 
-        private void produceFullCommand() {
-        }
+    private void produceFullCommand() {
+    }
 
-        private void produceFullProduct(){
+    private void produceFullProduct() {
 
-            List<Produit> produitList = produitService.getAll();
-            List<Image> imageList  = produitService.getAllImage();
-            List<Commentaire> commentaireList = produitService.getAllCom();
+        List<Produit> produitList = produitService.getAll();
+        List<Image> imageList = produitService.getAllImage();
+        List<Commentaire> commentaireList = produitService.getAllCom();
 
-            // linking
-            System.out.println("Select id of the product");
-            int idProduct = scanner.nextInt();
-            scanner.nextLine();
-            Produit produit = produitService.getById(idProduct);
+        // linking
+        System.out.println("Select id of the product");
+        int idProduct = scanner.nextInt();
+        scanner.nextLine();
+        Produit produit = produitService.getById(idProduct);
 
-            System.out.println("Select id of the image");
-            int idImage = scanner.nextInt();
-            scanner.nextLine();
-            Image image = produitService.getByIdImage(idImage);
+        System.out.println("Select id of the image");
+        int idImage = scanner.nextInt();
+        scanner.nextLine();
+        Image image = produitService.getByIdImage(idImage);
 
-            System.out.println("Select id of the commentary");
-            int idCommentary = scanner.nextInt();
-            scanner.nextLine();
-            Commentaire commentaire = produitService.getByIdCom(idCommentary);
-
-
-
-            Commande newCommand = new Commande();
+        System.out.println("Select id of the commentary");
+        int idCommentary = scanner.nextInt();
+        scanner.nextLine();
+        Commentaire commentaire = produitService.getByIdCom(idCommentary);
 
 
+        List<Image> imageOfProduct = produit.getImageList();
+        List<Commentaire> commentairesProduct = produit.getCommentaireList();
+        imageOfProduct.add(image);
+        commentairesProduct.add(commentaire);
 
-        }
 
-       
+    }
 
-        private void getTodayCommand() {
-        }
 
-        private List<Commande> getAllCommand() {
-        }
+    private List<Commande> getTodayCommand() throws ParseException {
+        List<Commande> commandeList = commandeService.getTodayCommand();
+        return commandeList;
 
-        private void produceCommandWithOneOrManyProducts() {
-        }
 
-        private void productsOverScore4() {
-        }
+    }
 
-        private void addCommentaryToProduct() {
-        }
+    private List<Commande> getAllCommand() {
+        List<Commande> commandeList = commandeService.getAllCommande();
+        return commandeList;
+    }
 
-        private void addImageToProduct() {
-        }
+    private void produceCommandWithOneOrManyProducts() {
+    }
 
-        private void closeAll() {
-            scanner.close();
-        }
+    private void productsOverScore4() {
+    }
 
-        private void deleteProductByBrand() {
+    private void addCommentaryToProduct() {
+    }
+
+    private void addImageToProduct() {
+    }
+
+    private void closeAll() {
+        scanner.close();
+    }
+
+    private void deleteProductByBrand() {
         try {
             System.out.println("What is the id of the brand ? ");
             String brand = scanner.nextLine();
             produitService.deleteProductByBrand(brand);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -229,9 +233,9 @@ import java.util.Scanner;
         try {
             System.out.println("What is the id of the brand ? ");
             String brand = scanner.nextLine();
-            List<Produit> productsByBrand =  produitService.productListByBrand(brand);
+            List<Produit> productsByBrand = produitService.productListByBrand(brand);
             return productsByBrand;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -240,9 +244,9 @@ import java.util.Scanner;
 
     private void averageProductPrice() {
         try {
-           double averagePrice =  produitService.averageProductPrice();
+            double averagePrice = produitService.averageProductPrice();
             System.out.println("the average price is " + averagePrice);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -264,7 +268,7 @@ import java.util.Scanner;
             scanner.nextLine();
             List<Produit> produitList = produitService.getProductrefsWithLowerStock(stockValue);
             return produitList;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -282,9 +286,9 @@ import java.util.Scanner;
             String dateTwoStr = scanner.nextLine();
             Date dateTwo = format.parse(dateTwoStr);
 
-           List<Produit> produitList = produitService.getProductBetweenDate(dateOne,dateTwo);
-           return produitList;
-        }catch (Exception e){
+            List<Produit> produitList = produitService.getProductBetweenDate(dateOne, dateTwo);
+            return produitList;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -301,9 +305,9 @@ import java.util.Scanner;
             String dateTwoStr = scanner.nextLine();
             Date dateTwo = format.parse(dateTwoStr);
 
-            List<Produit> produitList = produitService.getProductBetweenDate(dateOne,dateTwo);
+            List<Produit> produitList = produitService.getProductBetweenDate(dateOne, dateTwo);
             return produitList;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -316,7 +320,7 @@ import java.util.Scanner;
             scanner.nextLine();
             Produit produit = produitService.getById(id);
             return produit;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -327,7 +331,7 @@ import java.util.Scanner;
         try {
             List<Produit> produitList = produitService.getAll();
             return produitList;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
@@ -340,7 +344,7 @@ import java.util.Scanner;
             int id = scanner.nextInt();
             scanner.nextLine();
             produitService.delete(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -361,11 +365,10 @@ import java.util.Scanner;
             System.out.println("What is the stock ?");
             int stock = scanner.nextInt();
 
-            Produit newProduct = new Produit(brand,reference,realDate,price,stock);
+            Produit newProduct = new Produit(brand, reference, realDate, price, stock);
 
 
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -375,13 +378,7 @@ import java.util.Scanner;
     // CRUD IMAGE
 
 
-
-
-
-        //CRUD commentary
-
-
-
+    //CRUD commentary
 
 
 }

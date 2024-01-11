@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Commande {
 
     private int total;
 
-    private LocalDate dateCommande;
+    private Date dateCommande;
 
     @ManyToMany(mappedBy = "commandeList")
     List<Produit> produitList = new ArrayList<>();

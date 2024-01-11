@@ -1,3 +1,5 @@
+import controller.IHM;
+
 public class Main {
 
 
