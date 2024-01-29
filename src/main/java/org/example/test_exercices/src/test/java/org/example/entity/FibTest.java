@@ -71,7 +71,7 @@ public class FibTest {
     @Test
     void rangeSixNotContainManyElements(){
         //Arrange and Act
-        Fib fib = new Fib(5);
+        Fib fib = new Fib(6);
 
         //Assert
         List<Integer> result = fib.getFibSeries();
@@ -81,7 +81,7 @@ public class FibTest {
         verify.add(1);
         verify.add(2);
         verify.add(3);
-        verify.add(6);
+        verify.add(5);
         Assertions.assertEquals(result,verify);
     }
 
