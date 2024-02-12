@@ -72,7 +72,7 @@ use("bonus")
 //         }
 //     },
 //     {
-//         $project: { _id: 0, NomGymnase: 1 }
+//         $project: { _id: 0, NomGymnase: 1,"Seances.Libelle":1 }
 //     }
 // ])
 
@@ -123,14 +123,14 @@ use("bonus")
 
 // 10.Quels entraîneurs n’entraînent que du hand ball ou du basket
 // ball ?
-// db.demo.aggregate([
+db.demo.aggregate([
 
-// {$match:{ $or:[{"Sports.Entrainer":"Basket ball"}, {"Sports.Entrainer":"Hand ball"}]}},
-// {$project: {Nom:1, Prenom:1}}
+{$match:{ or:[{"Sports.Entrainer":"Basket ball"}, {"Sports.Entrainer":"Hand ball"}]}},
+{$project: {Nom:1, Prenom:1, "Sports.Entrainer":1}}
 
 
 
-// ])
+])
 
 // 11. Pour chaque sportif donner le nombre de sports qu’il arbitre?
 // db.demo.aggregate([
