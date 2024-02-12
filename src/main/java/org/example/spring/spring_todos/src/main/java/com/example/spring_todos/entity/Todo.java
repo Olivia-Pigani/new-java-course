@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Todo {
 
     private Long id;

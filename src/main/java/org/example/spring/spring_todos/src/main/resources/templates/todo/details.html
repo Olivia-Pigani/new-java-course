@@ -10,7 +10,7 @@
 <main>
     <h2>Todo's details</h2>
 
-    <div th:if="${!todoToShow.isEmpty()}">
+    <div th:if="${todoToShow != null}">
     <p th:text="${todoToShow.name}"></p>
     <p th:text="${todoToShow.description}"></p>
     <p th:text="${todoToShow.isDone}"></p>
