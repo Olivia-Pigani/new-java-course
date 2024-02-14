@@ -19,7 +19,11 @@
     </div>
 
     <div>
-        <a th:href="@{/}"><button>go back to home</button></a>
+        <a th:href="@{/}"><button>Go back to home</button></a>
+        <a th:action="@{/form/{studentId}(studentId=${student.id})}"><button>Update</button></a>
+        <form th:action="@{/deleteStudent/{id}(id=${student.id})}" method="post">
+            <button type="submit">Delete</button>
+        </form>
 
 
     </div>
@@ -33,11 +37,3 @@
 
 
 
-
-<!--<div class="container">-->
-<!--    <ul th:if="${rabbits != null}"  class="list-group list-group-flush">-->
-<!--        <li th:each="r : ${rabbits}" class="list-group-item">-->
-<!--            <a th:href="@{/detail/{id}(id=${r.id})}"><span th:text="${r.name}"></span> </a>-->
-<!--        </li>-->
-<!--    </ul>-->
-<!--</div>-->

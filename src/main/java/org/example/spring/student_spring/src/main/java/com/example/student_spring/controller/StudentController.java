@@ -49,16 +49,41 @@ public class StudentController {
     }
 
     @GetMapping("/form")
-    public String getForm() {
+    public String getForm(Model model) {
+        model.addAttribute("student", new Student());
         return "form";
     }
+    @GetMapping("/form/{studentId}")
+    public String showUpdateForm(@PathVariable("studentId") UUID id, Model model) {
+        Student studentToUpdate = studentService.getAStudentById(id);
+        if (studentToUpdate != null) {
+            model.addAttribute("student", studentToUpdate);
+            return "form";
+        } else {
+            return "redirect:/";
+        }
+    }
 
-    @PostMapping("/addastudent")
-    public String submitStudent(@ModelAttribute("student") Student newStudent) {
-        newStudent.setId(UUID.randomUUID());
-        studentService.saveAStudent(newStudent);
+
+    @PostMapping("/addOrUpdateStudent")
+    public String submitStudent(@ModelAttribute("student") Student student) {
+        if (student.getId() == null) {
+            studentService.saveAStudent(student);
+        } else {
+            studentService.updateAStudent(student.getId(), student);
+        }
         return "redirect:/";
     }
+
+    @PostMapping("/deleteStudent/{studentId}")
+    public String deleteStudent(@PathVariable("studentId") UUID id) {
+        studentService.deleteAStudent(id);
+        return "redirect:/";
+    }
+
+
+
+
 
 
 

@@ -11,15 +11,17 @@
 
     <h1>Form</h1>
 
-    <form th:action="@{/addastudent}" th:object="${student}" method="post">
+    <form th:action="@{/addOrUpdateStudent}" th:object="${student}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
         <div class="mb-3">
             <label for="firstname" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp" th:field="*{firstname}">
+            <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp" th:field="*{prenom}" >
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
         </div>
         <div class="mb-3">
             <label for="lastname" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="lastname" th:field="*{lastname}">
+            <input type="text" class="form-control" id="lastname" th:field="*{nom}">
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>

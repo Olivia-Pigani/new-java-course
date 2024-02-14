@@ -2,6 +2,7 @@ package com.example.student_spring.service;
 
 import com.example.student_spring.model.Student;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.HashMap;
 import java.util.List;
@@ -103,5 +104,16 @@ public class StudentService {
     }
 
 
+    public void updateAStudent(UUID id, Student student) {
+        Student studentToUpdate = getAStudentById(id);
+        if (studentToUpdate != null){
+            studentToUpdate.setPrenom(student.getPrenom());
+            studentToUpdate.setNom(student.getNom());
+            studentToUpdate.setEmail(student.getEmail());
+            studentToUpdate.setAge(student.getAge());
 
+            students.put(id, studentToUpdate);
+
+        }
+    }
 }

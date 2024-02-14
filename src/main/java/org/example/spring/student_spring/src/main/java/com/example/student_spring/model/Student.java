@@ -1,8 +1,6 @@
 package com.example.student_spring.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.UUID;
@@ -10,6 +8,8 @@ import java.util.UUID;
 @Setter
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student {
 
     private UUID id;
