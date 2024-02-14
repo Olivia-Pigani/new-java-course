@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student's details</title>
+    <span th:replace="~{home :: bootstrapImports}"></span>
+</head>
+<body>
+
+<main class="container-fluid">
+
+    <h1> Student's details </h1>
+
+    <div th:if="student != null">
+    <p>FirstName : <span th:text="${student.prenom}"></span>  </p>
+    <p>LastName : <span th:text="${student.nom}"></span> </p>
+    <p>Age : <span th:text="${student.age}"></span></p>
+    <p>Email : <span th:text="${student.email}"></span></p>
+    </div>
+
+    <div>
+        <a th:href="@{/}"><button>go back to home</button></a>
+
+
+    </div>
+
+</main>
+
+
+
+</body>
+</html>
+
+
+
+
+<!--<div class="container">-->
+<!--    <ul th:if="${rabbits != null}"  class="list-group list-group-flush">-->
+<!--        <li th:each="r : ${rabbits}" class="list-group-item">-->
+<!--            <a th:href="@{/detail/{id}(id=${r.id})}"><span th:text="${r.name}"></span> </a>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</div>-->
