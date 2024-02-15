@@ -3,7 +3,6 @@ package com.example.student_spring.controller;
 import com.example.student_spring.model.Student;
 import com.example.student_spring.service.StudentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +18,25 @@ public class StudentController {
 
     private final StudentService studentService;
 
+
+    @Value("M2I")
+    private String academyName;
+
+    @Value("otto@m2i.com")
+    private String academyContact;
+
+
+
     @GetMapping
     public String getHomePage(Model model) {
         List<Student> studentList = studentService.getAllStudents(); // if its empty
         model.addAttribute("studentList", studentList);
+
+
+        model.addAttribute("name",academyName);
+        model.addAttribute("contact",academyContact);
+
+
         System.out.println("go to homepage");
         return "home";
     }

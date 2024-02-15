@@ -25,7 +25,15 @@
 
 <main>
 
-    <h1>Homepage</h1>
+    <h1>MySchool</h1>
+
+    <h2 th:text="${name}"></h2>
+    <h2 th:text="${contact}"></h2>
+
+
+    <div class="text-center mb-5">
+        <img th:src="@{/images/school.jpg}" alt="Image" class="mx-auto" width="250" >
+    </div>
 
 <a th:replace="~{students-list}"></a>
 
