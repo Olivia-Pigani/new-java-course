@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,9 +28,14 @@ public class StudentController {
     }
 
     @GetMapping("/studentslist")
-    public String getAllStudents(Model model) {
-        List<Student> studentList = studentService.getAllStudents();
-        model.addAttribute("studentList", studentList);
+    public String getAllStudents(@RequestParam(name = "search",required = false) String search,Model model) {
+        if (search == null ){
+            model.addAttribute("studentList", studentService.getAllStudents());
+        }else {
+
+            model.addAttribute("studentList", studentService.searchStudents(search));
+        }
+
         return "home";
     }
 

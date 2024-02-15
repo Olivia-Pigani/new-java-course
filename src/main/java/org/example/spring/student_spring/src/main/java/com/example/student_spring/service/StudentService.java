@@ -116,4 +116,9 @@ public class StudentService {
 
         }
     }
+
+    public List<Student> searchStudents(String search) {
+        return students.values().stream().filter(student -> student.getPrenom().toLowerCase().contains(search.toLowerCase()) || student.getNom().toLowerCase().contains(search.toLowerCase())).toList();
+    }
+
 }
