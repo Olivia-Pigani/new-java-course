@@ -1,5 +1,6 @@
 package com.example.student_spring.model;
 
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -13,13 +14,26 @@ import java.util.UUID;
 public class Student {
 
     private UUID id;
+
+
+    @NotNull(message = "firstName can not be null")
+    @NotBlank
     private String prenom;
+
+    @NotNull(message = "lastName can not be null")
+    @NotBlank
     private String nom;
+
+
+    @NotBlank
+    @NotNull
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
+
+
+    @Min(18)
+    @Max(120)
     private int age;
-//    @Value("${academy.name}")
-//    private String academyName;
-//    @Value("${academy.contact}")
-//    private String academyContact;
+
 
 }

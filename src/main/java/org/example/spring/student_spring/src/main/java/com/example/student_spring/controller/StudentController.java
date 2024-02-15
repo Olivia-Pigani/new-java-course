@@ -3,11 +3,14 @@ package com.example.student_spring.controller;
 import com.example.student_spring.model.Student;
 import com.example.student_spring.service.IStudentService;
 import com.example.student_spring.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.model.IModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +30,14 @@ public class StudentController {
     private String academyContact;
 
 
-
     @GetMapping
     public String getHomePage(Model model) {
         List<Student> studentList = studentService.getAllStudents(); // if its empty
         model.addAttribute("studentList", studentList);
 
 
-        model.addAttribute("name",academyName);
-        model.addAttribute("contact",academyContact);
+        model.addAttribute("name", academyName);
+        model.addAttribute("contact", academyContact);
 
 
         System.out.println("go to homepage");
@@ -43,10 +45,10 @@ public class StudentController {
     }
 
     @GetMapping("/studentslist")
-    public String getAllStudents(@RequestParam(name = "search",required = false) String search,Model model) {
-        if (search == null ){
+    public String getAllStudents(@RequestParam(name = "search", required = false) String search, Model model) {
+        if (search == null) {
             model.addAttribute("studentList", studentService.getAllStudents());
-        }else {
+        } else {
             StudentService castedService = (StudentService) studentService;
             model.addAttribute("studentList", castedService.searchStudents(search));
         }
@@ -58,9 +60,9 @@ public class StudentController {
     @GetMapping("/details/{studentId}")
     public String getStudentDetails(@PathVariable("studentId") UUID id, Model model) {
         Student student = studentService.getAStudentById(id);
-        if (student == null){
+        if (student == null) {
             return "redirect:/";
-        }else {
+        } else {
             model.addAttribute("student", student);
             return "student-details";
         }
@@ -72,6 +74,7 @@ public class StudentController {
         model.addAttribute("student", new Student());
         return "form";
     }
+
     @GetMapping("/form/{studentId}")
     public String showUpdateForm(@PathVariable("studentId") UUID id, Model model) {
         Student studentToUpdate = studentService.getAStudentById(id);
@@ -85,13 +88,23 @@ public class StudentController {
 
 
     @PostMapping("/addOrUpdateStudent")
-    public String submitStudent(@ModelAttribute("student") Student student) {
-        if (student.getId() == null) {
-            studentService.saveAStudent(student);
+    public String submitStudent(@Valid @ModelAttribute("student") Student student, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            if (student.getId() == null) {
+                return "form";
+            } else {
+                model.addAttribute("student", student);
+                return "form";
+            }
         } else {
-            studentService.updateAStudent(student.getId(), student);
+            if (student.getId() == null) {
+                studentService.saveAStudent(student);
+            } else {
+                studentService.updateAStudent(student.getId(), student);
+            }
+            return "redirect:/";
         }
-        return "redirect:/";
     }
 
     @PostMapping("/deleteStudent/{studentId}")
@@ -99,11 +112,6 @@ public class StudentController {
         studentService.deleteAStudent(id);
         return "redirect:/";
     }
-
-
-
-
-
 
 
 }
