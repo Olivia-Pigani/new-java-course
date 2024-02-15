@@ -17,19 +17,22 @@
         <div class="mb-3">
             <label for="firstname" class="form-label">First Name</label>
             <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp" th:field="*{prenom}" >
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></span>
         </div>
         <div class="mb-3">
             <label for="lastname" class="form-label">Last Name</label>
             <input type="text" class="form-control" id="lastname" th:field="*{nom}">
+            <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" th:field="*{email}">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
         </div>
         <div class="mb-3">
             <label for="age" class="form-label">Age</label>
             <input type="number" class="form-control" id="age" th:field="*{age}">
+            <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
         </div>
       <button type="submit" class="btn btn-primary"><span th:text="${student.id == null ? 'Add':'Update'}"></span> </button>
     </form>

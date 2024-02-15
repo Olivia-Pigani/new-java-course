@@ -7,7 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class StudentSpringApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(StudentSpringApplication.class, args);
+
+        System.out.println("http://localhost:8081/");
+
+
+
+
     }
 
 }
