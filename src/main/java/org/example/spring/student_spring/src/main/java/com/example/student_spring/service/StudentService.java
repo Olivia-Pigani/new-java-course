@@ -12,7 +12,7 @@ import java.util.UUID;
 
 // REPLACE REPOSITORY
 @Service
-public class StudentService {
+public class StudentService implements IStudentService{
 
 
     private final Map<UUID, Student> students;
@@ -72,6 +72,7 @@ public class StudentService {
 
     //CRUD
 
+    @Override
     public List<Student> getAllStudents(){
         students.forEach((key, value) -> {
             System.out.println("Clé: " + key + ", Valeur: " + value);
@@ -79,31 +80,42 @@ public class StudentService {
         return students.values().stream().toList();
     }
 
+
+    @Override
     public Student getAStudentById(UUID studentId){
         return students.values().stream().filter(s->s.getId().equals(studentId)).findFirst().orElse(null);
     }
 
-    public boolean saveAStudent(Student newStudent){
-        if (newStudent.getId() == null){
+
+    @Override
+    public Student saveAStudent(Student newStudent){
+        if (newStudent.getId() == null) {
             newStudent.setId(UUID.randomUUID());
-            students.put(newStudent.getId(),newStudent);
-            return true;
-        } else {
-            return false;
+            students.put(newStudent.getId(), newStudent);
         }
+        return null;
     }
 
+
+    @Override
     public void deleteAStudent(UUID studentId){
         if (studentId != null ){
             students.remove(studentId);
         }
+
+        //removeIf
+
+
     }
 
+
+    @Override
     public Student getASttudentByHisName(String studentName){
         return students.values().stream().filter(student -> student.getNom().equals(studentName)).findFirst().orElse(null);
     }
 
 
+    @Override
     public void updateAStudent(UUID id, Student student) {
         Student studentToUpdate = getAStudentById(id);
         if (studentToUpdate != null){
@@ -117,6 +129,9 @@ public class StudentService {
         }
     }
 
+
+
+    @Override
     public List<Student> searchStudents(String search) {
         return students.values().stream().filter(student -> student.getPrenom().toLowerCase().contains(search.toLowerCase()) || student.getNom().toLowerCase().contains(search.toLowerCase())).toList();
     }

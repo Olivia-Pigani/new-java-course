@@ -1,6 +1,7 @@
 package com.example.student_spring.controller;
 
 import com.example.student_spring.model.Student;
+import com.example.student_spring.service.IStudentService;
 import com.example.student_spring.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StudentController {
 
-    private final StudentService studentService;
+    private final IStudentService studentService;
 
 
     @Value("M2I")
@@ -46,8 +47,8 @@ public class StudentController {
         if (search == null ){
             model.addAttribute("studentList", studentService.getAllStudents());
         }else {
-
-            model.addAttribute("studentList", studentService.searchStudents(search));
+            StudentService castedService = (StudentService) studentService;
+            model.addAttribute("studentList", castedService.searchStudents(search));
         }
 
         return "home";
