@@ -20,7 +20,7 @@
 
     <div>
         <a th:href="@{/}"><button>Go back to home</button></a>
-        <a th:action="@{/form/{studentId}(studentId=${student.id})}"><button>Update</button></a>
+        <a th:href="@{/form/{studentId}(studentId=${student.id})}"><button>Update</button></a>
         <form th:action="@{/deleteStudent/{id}(id=${student.id})}" method="post">
             <button type="submit">Delete</button>
         </form>

@@ -18,13 +18,6 @@ public class StudentController {
 
     private final StudentService studentService;
 
-//    @Value("${academy.name}")
-//    private final String academyName;
-//
-//    @Value("${academy.contact}")
-//    private final String academyContact;
-
-
     @GetMapping
     public String getHomePage(Model model) {
         List<Student> studentList = studentService.getAllStudents(); // if its empty
@@ -44,8 +37,13 @@ public class StudentController {
     @GetMapping("/details/{studentId}")
     public String getStudentDetails(@PathVariable("studentId") UUID id, Model model) {
         Student student = studentService.getAStudentById(id);
-        model.addAttribute("student", student);
-        return "student-details";
+        if (student == null){
+            return "redirect:/";
+        }else {
+            model.addAttribute("student", student);
+            return "student-details";
+        }
+
     }
 
     @GetMapping("/form")
