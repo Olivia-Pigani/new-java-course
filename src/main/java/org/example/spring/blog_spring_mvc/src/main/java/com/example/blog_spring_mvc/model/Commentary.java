@@ -1,10 +1,7 @@
 package com.example.blog_spring_mvc.model;
 
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -22,6 +19,7 @@ public class Commentary {
     @NotBlank
     @Size(min = 10,max = 50)
     private String userName;
+
 
     @NotNull
     @NotBlank

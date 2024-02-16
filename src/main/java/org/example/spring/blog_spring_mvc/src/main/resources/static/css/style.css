@@ -1,5 +1,4 @@
 footer{
-    position: fixed;
     width: 100%;
     left: 0;
     right: 0;
@@ -9,5 +8,9 @@ footer{
 }
 
 .shrinkedText{
-    max-width: 200px;
+    max-width: 500px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
