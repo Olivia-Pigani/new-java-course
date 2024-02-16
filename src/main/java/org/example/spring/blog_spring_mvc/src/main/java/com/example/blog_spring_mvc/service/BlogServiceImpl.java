@@ -15,8 +15,8 @@ import java.util.*;
 @Service
 public class BlogServiceImpl implements IBlogService {
 
-    private final Map<UUID,BlogPost> blogPosts = new LinkedHashMap<>();
-    private final Map<UUID,Commentary> commentaries = new LinkedHashMap<>();
+    private final Map<UUID, BlogPost> blogPosts = new LinkedHashMap<>();
+    private final Map<UUID, Commentary> commentaries = new LinkedHashMap<>();
 
     private final ResourceLoader resourceLoader;
 
@@ -60,10 +60,10 @@ public class BlogServiceImpl implements IBlogService {
                 .build();
 
 
-        blogPosts.put(applePie.getId(),applePie);
-        blogPosts.put(mochi.getId(),mochi);
-        blogPosts.put(schnecKenKuchen.getId(),schnecKenKuchen);
-        commentaries.put(com1ApplePie.getId(),com1ApplePie);
+        blogPosts.put(applePie.getId(), applePie);
+        blogPosts.put(mochi.getId(), mochi);
+        blogPosts.put(schnecKenKuchen.getId(), schnecKenKuchen);
+        commentaries.put(com1ApplePie.getId(), com1ApplePie);
 
 
     }
@@ -71,9 +71,9 @@ public class BlogServiceImpl implements IBlogService {
     // CRUD
     @Override
     public BlogPost saveBlogPost(BlogPost newBlogPost) {
-        if (newBlogPost.getId() == null){
+        if (newBlogPost.getId() == null) {
             newBlogPost.setId(UUID.randomUUID());
-           return blogPosts.put(newBlogPost.getId(),newBlogPost);
+            return blogPosts.put(newBlogPost.getId(), newBlogPost);
         }
 
         return null;
@@ -92,7 +92,7 @@ public class BlogServiceImpl implements IBlogService {
     @Override
     public boolean updateBlogPost(UUID id, BlogPost blogPostToUpdate) {
         BlogPost blogPostToFind = getBlogPostById(id);
-        if (blogPostToFind != null){
+        if (blogPostToFind != null) {
             blogPostToFind.setTitle(blogPostToFind.getTitle());
             blogPostToFind.setPostContent(blogPostToUpdate.getPostContent());
             blogPostToFind.setImageUrl(blogPostToFind.getImageUrl());
@@ -113,9 +113,9 @@ public class BlogServiceImpl implements IBlogService {
 
     @Override
     public Commentary saveCommentary(Commentary newCommentary) {
-        if (newCommentary.getId() == null){
+        if (newCommentary.getId() == null) {
             newCommentary.setId(UUID.randomUUID());
-            return commentaries.put(newCommentary.getId(),newCommentary);
+            return commentaries.put(newCommentary.getId(), newCommentary);
         }
 
         return null;
@@ -128,13 +128,13 @@ public class BlogServiceImpl implements IBlogService {
 
     @Override
     public List<Commentary> getAllCommentary() {
-        return  commentaries.values().stream().toList();
+        return commentaries.values().stream().toList();
     }
 
     @Override
     public boolean updateCommentary(UUID id, Commentary commentaryToUpdate) {
         Commentary commentaryToFind = getCommentaryById(id);
-        if (commentaryToFind != null){
+        if (commentaryToFind != null) {
             commentaryToFind.setUserName(commentaryToUpdate.getUserName());
             commentaryToFind.setEmail(commentaryToUpdate.getEmail());
             commentaryToFind.setContent(commentaryToUpdate.getContent());
@@ -151,9 +151,9 @@ public class BlogServiceImpl implements IBlogService {
     }
 
 
-     // SPECIFIC METHODS
+    // SPECIFIC METHODS
 
-    public String loadFakeContent(String path){
+    public String loadFakeContent(String path) {
         try {
             Resource resource = resourceLoader.getResource("classpath:/post-content/" + path);
             try (InputStream inputStream = resource.getInputStream();
@@ -166,6 +166,15 @@ public class BlogServiceImpl implements IBlogService {
         return "Error while reading the file";
     }
 
+
+    public List<Commentary> getAllCommentariesByPostId(UUID postId) {
+        List<Commentary> commentaryList = getAllCommentary();
+
+        return commentaryList.stream().filter(commentary -> commentary.getBlogPost() != null && commentary.getBlogPost().getId().equals(postId))
+                .toList();
+
+
+    }
 
 
 }

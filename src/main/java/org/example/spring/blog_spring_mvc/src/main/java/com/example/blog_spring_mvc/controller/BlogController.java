@@ -2,6 +2,7 @@ package com.example.blog_spring_mvc.controller;
 
 import com.example.blog_spring_mvc.model.BlogPost;
 import com.example.blog_spring_mvc.model.Commentary;
+import com.example.blog_spring_mvc.service.BlogServiceImpl;
 import com.example.blog_spring_mvc.service.IBlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +40,10 @@ public class BlogController {
     @GetMapping("/details/{postId}")
     public String getPostDetailsAndCommentaries(@PathVariable("postId")UUID id, Model model){
         BlogPost blogPost = blogService.getBlogPostById(id);
-        List<Commentary> commentaryList = blogService.getAllCommentary();
+
+        BlogServiceImpl castedRepo = (BlogServiceImpl) blogService;
+        List<Commentary> commentaryList = castedRepo.getAllCommentariesByPostId(id);
+
         if (blogPost != null){
             model.addAttribute("blogPost",blogPost);
             model.addAttribute("commentaryList",commentaryList);
