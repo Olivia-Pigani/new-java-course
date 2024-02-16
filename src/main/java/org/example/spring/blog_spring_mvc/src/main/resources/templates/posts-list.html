@@ -9,35 +9,21 @@
 
 
 
-<div class="row">
-    <div class="col-sm-4 mb-3 mb-sm-0">
+
+<div class="row"  th:if="${blogPosts != null}">
+
+    <div class="col-sm-4 mb-3 " th:each="post : ${blogPosts}">
+
         <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="card-body text-center">
+                <h5 class="card-title" th:text="${post.title}"></h5>
+                <img th:src="@{${post.imageUrl}} " height="200" width="300" alt="recipe's image">
+                <p class="card-text shrinkedText" th:text="${post.postContent}"></p>
+                <a href="#" class="btn btn-primary">Details</a>
             </div>
         </div>
     </div>
 
-    <div class="col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-        </div>
-    </div>
 </div>
 
 

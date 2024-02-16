@@ -2,31 +2,53 @@ package com.example.blog_spring_mvc.service;
 
 import com.example.blog_spring_mvc.model.BlogPost;
 import com.example.blog_spring_mvc.model.Commentary;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 public class BlogServiceImpl implements IBlogService {
 
-    private final Map<UUID,BlogPost> blogPosts;
-    private final Map<UUID,Commentary> commentaries;
+    private final Map<UUID,BlogPost> blogPosts = new LinkedHashMap<>();
+    private final Map<UUID,Commentary> commentaries = new LinkedHashMap<>();
 
-    public BlogServiceImpl() {
-        this.blogPosts = new HashMap<>();
-        this.commentaries = new HashMap<>();
+    private final ResourceLoader resourceLoader;
 
+    @Autowired
+    public BlogServiceImpl(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
 
         BlogPost applePie = BlogPost.builder()
                 .id(UUID.randomUUID())
                 .title("Simple apple pie recipe")
-                .postContent("test test")
+                .postContent(loadFakeContent("fakecontent.txt"))
                 .postDate(Date.from(Instant.now()))
                 .authorName("Phillipe Etchebest")
                 .imageUrl("/image/apple-pie.jpg")
+                .build();
+
+        BlogPost mochi = BlogPost.builder()
+                .id(UUID.randomUUID())
+                .title("Tea mochi")
+                .postContent(loadFakeContent("fakecontent.txt"))
+                .postDate(Date.from(Instant.now()))
+                .authorName("Kim Oh")
+                .imageUrl("/image/tea-mochi.jpg")
+                .build();
+
+        BlogPost schnecKenKuchen = BlogPost.builder()
+                .id(UUID.randomUUID())
+                .title("Alsacian Schneckenkuchen")
+                .postContent(loadFakeContent("fakecontent.txt"))
+                .postDate(Date.from(Instant.now()))
+                .authorName("Greta Krotz")
+                .imageUrl("/image/german-cake.jpg")
                 .build();
 
 
@@ -39,6 +61,8 @@ public class BlogServiceImpl implements IBlogService {
 
 
         blogPosts.put(applePie.getId(),applePie);
+        blogPosts.put(mochi.getId(),mochi);
+        blogPosts.put(schnecKenKuchen.getId(),schnecKenKuchen);
         commentaries.put(com1ApplePie.getId(),com1ApplePie);
 
 
@@ -127,7 +151,21 @@ public class BlogServiceImpl implements IBlogService {
     }
 
 
-    // SPECIFIC METHODS
+     // SPECIFIC METHODS
+
+    public String loadFakeContent(String path){
+        try {
+            Resource resource = resourceLoader.getResource("classpath:/post-content/" + path);
+            try (InputStream inputStream = resource.getInputStream();
+                 Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8.name())) {
+                return scanner.useDelimiter("\\A").next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Error while reading the file";
+    }
+
 
 
 }
