@@ -18,9 +18,7 @@ public class BlogServiceImpl implements IBlogService {
 
     private final Map<UUID, BlogPost> blogPosts = new LinkedHashMap<>();
     private final Map<UUID, Commentary> commentaries = new LinkedHashMap<>();
-
-
-
+    private Admin admin;
     private final ResourceLoader resourceLoader;
 
     @Autowired
@@ -29,8 +27,9 @@ public class BlogServiceImpl implements IBlogService {
 
         //Fake the database
 
-        Admin admin = Admin.getAdmin();
+        this.admin = Admin.getAdmin();
         System.out.println(admin.toString());
+
 
         BlogPost applePie = BlogPost.builder()
                 .id(UUID.randomUUID())
@@ -182,6 +181,15 @@ public class BlogServiceImpl implements IBlogService {
                 .toList();
 
 
+    }
+
+
+    public boolean signInByPasswordAndEmail(String password,String email){
+        if (admin.getPassword().equals(password) && admin.getAdminMail().equals(email)){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

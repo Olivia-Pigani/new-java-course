@@ -1,9 +1,12 @@
 package com.example.blog_spring_mvc.controller;
 
+import com.example.blog_spring_mvc.dto.AdminDTO;
+import com.example.blog_spring_mvc.model.Admin;
 import com.example.blog_spring_mvc.model.BlogPost;
 import com.example.blog_spring_mvc.model.Commentary;
 import com.example.blog_spring_mvc.service.BlogServiceImpl;
 import com.example.blog_spring_mvc.service.IBlogService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +35,7 @@ public class BlogController {
     @Value("hello@myrecipes.com")
     private String contactEmail;
 
+    // HOME
     @GetMapping
     public String getHome(Model model) {
         List<BlogPost> blogPosts = blogService.getAllBlogPost();
@@ -40,6 +44,8 @@ public class BlogController {
         model.addAttribute("contactEmail", contactEmail);
         return "home";
     }
+
+    // BLOG POST
 
     @GetMapping("/details/{postId}")
     public String getPostDetailsAndCommentaries(@PathVariable("postId") UUID id, Model model) {
@@ -60,6 +66,7 @@ public class BlogController {
 
     }
 
+// COMMENTARY
 
     @GetMapping("/com-form/{postId}")
     public String getCommentaryFormByPostId(@PathVariable("postId") UUID id, Model model) {
@@ -84,6 +91,28 @@ public class BlogController {
             commentary.setBlogPost(blogPost);
             blogService.saveCommentary(commentary);
             return "redirect:/details/" + id;
+        }
+
+    }
+
+
+    // AUTHENTIFICATION
+
+    @GetMapping("/auth-form")
+    public String getAuthForm(Model model){
+        model.addAttribute("adminDTO",new AdminDTO());
+        return "auth-form";
+    }
+
+    @PostMapping("/signin")
+    public String signIn(@ModelAttribute("adminDTO")AdminDTO adminDTO, Model model, HttpSession session){
+        BlogServiceImpl castedService = (BlogServiceImpl) blogService;
+        if(castedService.signInByPasswordAndEmail(adminDTO.getPassword(),adminDTO.getAdminMail())){
+            session.setAttribute("isLogged",true);
+            return "redirect:/";
+        } else {
+            session.setAttribute("isLogged",false);
+            return "auth-form";
         }
 
     }

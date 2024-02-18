@@ -11,6 +11,8 @@ public interface IBlogService {
 
 //CRUD
 
+    // BlogPost
+
     public BlogPost saveBlogPost(BlogPost newBlogPost);
 
     public BlogPost getBlogPostById(UUID id);
@@ -23,7 +25,7 @@ public interface IBlogService {
 
 
 
-
+    // Commentary
 
     public Commentary saveCommentary(Commentary newCommentary);
 
@@ -34,7 +36,6 @@ public interface IBlogService {
     public boolean updateCommentary(UUID id, Commentary commentaryToUpdate);
 
     public void deleteCommentary(UUID id);
-
 
 
 

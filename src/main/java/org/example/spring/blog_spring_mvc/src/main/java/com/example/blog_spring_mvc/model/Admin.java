@@ -1,17 +1,19 @@
 package com.example.blog_spring_mvc.model;
 
+
+import lombok.*;
+
+@Getter
+@Setter
 public class Admin {
 
+    private String adminMail = "admin@email.com";
 
-    private String adminMail;
-
-    private String password;
+    private String password ="1234aA";
 
     private static volatile Admin admin = null;
 
-    public Admin(String adminMail, String password) {
-        this.adminMail = adminMail;
-        this.password = password;
+    private Admin() {
     }
 
 
@@ -19,7 +21,7 @@ public class Admin {
         if (admin == null){
             synchronized (Admin.class){
                 if (admin == null){
-                    admin = new Admin("admin@email.com","1234aA");
+                    admin = new Admin();
                 }
             }
         }
