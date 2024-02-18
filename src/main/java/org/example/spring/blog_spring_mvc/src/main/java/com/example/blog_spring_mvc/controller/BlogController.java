@@ -4,12 +4,16 @@ import com.example.blog_spring_mvc.model.BlogPost;
 import com.example.blog_spring_mvc.model.Commentary;
 import com.example.blog_spring_mvc.service.BlogServiceImpl;
 import com.example.blog_spring_mvc.service.IBlogService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,32 +35,58 @@ public class BlogController {
     @GetMapping
     public String getHome(Model model) {
         List<BlogPost> blogPosts = blogService.getAllBlogPost();
-        model.addAttribute("blogPosts",blogPosts);
-        model.addAttribute("blogName",blogName);
-        model.addAttribute("contactEmail",contactEmail);
+        model.addAttribute("blogPosts", blogPosts);
+        model.addAttribute("blogName", blogName);
+        model.addAttribute("contactEmail", contactEmail);
         return "home";
     }
 
     @GetMapping("/details/{postId}")
-    public String getPostDetailsAndCommentaries(@PathVariable("postId")UUID id, Model model){
+    public String getPostDetailsAndCommentaries(@PathVariable("postId") UUID id, Model model) {
         BlogPost blogPost = blogService.getBlogPostById(id);
 
         BlogServiceImpl castedRepo = (BlogServiceImpl) blogService;
         List<Commentary> commentaryList = castedRepo.getAllCommentariesByPostId(id);
 
-        if (blogPost != null){
-            model.addAttribute("blogPost",blogPost);
-            model.addAttribute("commentaryList",commentaryList);
-            model.addAttribute("blogName",blogName);
-            model.addAttribute("contactEmail",contactEmail);
+        if (blogPost != null) {
+            model.addAttribute("blogPost", blogPost);
+            model.addAttribute("commentaryList", commentaryList);
+            model.addAttribute("blogName", blogName);
+            model.addAttribute("contactEmail", contactEmail);
             return "post-details";
-        }else {
+        } else {
             return "redirect:/";
         }
 
+    }
+
+
+    @GetMapping("/com-form/{postId}")
+    public String getCommentaryFormByPostId(@PathVariable("postId") UUID id, Model model) {
+        BlogPost blogPost = blogService.getBlogPostById(id);
+        if (blogPost != null) {
+            model.addAttribute("blogPost", blogPost);
+            model.addAttribute("commentary", new Commentary());
+            return "com-form";
+
+        } else {
+            return "redirect:/details/{postId}";
+        }
+    }
+
+    @PostMapping("/addCommentary/{postId}")
+    public String submitACommentaryForAPost(@PathVariable("postId") UUID id, @Valid @ModelAttribute("commentary") Commentary commentary, BindingResult bindingResult, Model model) {
+        BlogPost blogPost = blogService.getBlogPostById(id);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("blogPost",blogPost);
+            return "com-form";
+        } else {
+            commentary.setBlogPost(blogPost);
+            blogService.saveCommentary(commentary);
+            return "redirect:/details/" + id;
         }
 
-
+    }
 
 
 }

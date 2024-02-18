@@ -7,8 +7,12 @@
 </head>
 <body>
 
+<div>
+<a th:href="@{/com-form/{postId}(postId=${blogPost.id})}"><button class="btn btn-primary">Add a comment</button></a>
+</div>
+
 <div class="card mb-3 " th:if="${commentaryList != null}">
-    <div class="row g-0" th:each="com : ${commentaryList}">
+    <div class="row g-0 my-2" th:each="com : ${commentaryList}">
         <div class="col-md-4">
             <img th:src="@{/image/user-face.png}" class="img-fluid rounded-start" alt="user profil picture">
         </div>

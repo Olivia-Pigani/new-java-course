@@ -1,5 +1,6 @@
 package com.example.blog_spring_mvc.service;
 
+import com.example.blog_spring_mvc.model.Admin;
 import com.example.blog_spring_mvc.model.BlogPost;
 import com.example.blog_spring_mvc.model.Commentary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,18 @@ public class BlogServiceImpl implements IBlogService {
     private final Map<UUID, BlogPost> blogPosts = new LinkedHashMap<>();
     private final Map<UUID, Commentary> commentaries = new LinkedHashMap<>();
 
+
+
     private final ResourceLoader resourceLoader;
 
     @Autowired
     public BlogServiceImpl(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
+
+        //Fake the database
+
+        Admin admin = Admin.getAdmin();
+        System.out.println(admin.toString());
 
         BlogPost applePie = BlogPost.builder()
                 .id(UUID.randomUUID())
