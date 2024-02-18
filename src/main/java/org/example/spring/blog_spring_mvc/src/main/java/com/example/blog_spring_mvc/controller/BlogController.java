@@ -1,7 +1,6 @@
 package com.example.blog_spring_mvc.controller;
 
 import com.example.blog_spring_mvc.dto.AdminDTO;
-import com.example.blog_spring_mvc.model.Admin;
 import com.example.blog_spring_mvc.model.BlogPost;
 import com.example.blog_spring_mvc.model.Commentary;
 import com.example.blog_spring_mvc.service.BlogServiceImpl;
@@ -36,7 +35,7 @@ public class BlogController {
     private String contactEmail;
 
     // HOME
-    @GetMapping
+    @GetMapping("/")
     public String getHome(Model model) {
         List<BlogPost> blogPosts = blogService.getAllBlogPost();
         model.addAttribute("blogPosts", blogPosts);
@@ -116,6 +115,14 @@ public class BlogController {
         }
 
     }
+
+    @GetMapping("signout")
+    public String signOut(HttpSession session){
+        session.setAttribute("isLogged",false);
+        return "redirect:/";
+    }
+
+
 
 
 }
