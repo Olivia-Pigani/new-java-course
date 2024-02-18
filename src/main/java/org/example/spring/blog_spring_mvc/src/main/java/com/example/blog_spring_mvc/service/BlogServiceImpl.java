@@ -80,6 +80,7 @@ public class BlogServiceImpl implements IBlogService {
     public BlogPost saveBlogPost(BlogPost newBlogPost) {
         if (newBlogPost.getId() == null) {
             newBlogPost.setId(UUID.randomUUID());
+            newBlogPost.setPostDate(Date.from(Instant.now()));
             return blogPosts.put(newBlogPost.getId(), newBlogPost);
         }
 

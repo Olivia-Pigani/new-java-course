@@ -36,8 +36,7 @@ public class BlogPost {
     @Size(max = 100)
     private String authorName;
 
-    @NotNull(message = "must contain a date")
-    @NotBlank
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date postDate;
 

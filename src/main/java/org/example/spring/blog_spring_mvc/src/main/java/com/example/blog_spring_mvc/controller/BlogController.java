@@ -44,7 +44,7 @@ public class BlogController {
         return "home";
     }
 
-    // BLOG POST
+    // BLOG POST DETAILS
 
     @GetMapping("/details/{postId}")
     public String getPostDetailsAndCommentaries(@PathVariable("postId") UUID id, Model model) {
@@ -65,7 +65,30 @@ public class BlogController {
 
     }
 
-// COMMENTARY
+    // BLOG POST FORM
+
+    @GetMapping("/post-form")
+    public String getThePostForm(Model model) {
+
+        model.addAttribute("blogPost", new BlogPost());
+
+        return "post-form";
+
+    }
+
+
+    @PostMapping("/addAPost")
+    public String addAPostLogic(@Valid @ModelAttribute BlogPost blogPost, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("blogPost", blogPost);
+            return "post-form";
+        }else {
+            blogService.saveBlogPost(blogPost);
+            return "redirect:/";
+        }
+    }
+
+    // COMMENTARY
 
     @GetMapping("/com-form/{postId}")
     public String getCommentaryFormByPostId(@PathVariable("postId") UUID id, Model model) {
@@ -84,7 +107,7 @@ public class BlogController {
     public String submitACommentaryForAPost(@PathVariable("postId") UUID id, @Valid @ModelAttribute("commentary") Commentary commentary, BindingResult bindingResult, Model model) {
         BlogPost blogPost = blogService.getBlogPostById(id);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("blogPost",blogPost);
+            model.addAttribute("blogPost", blogPost);
             return "com-form";
         } else {
             commentary.setBlogPost(blogPost);
@@ -98,31 +121,29 @@ public class BlogController {
     // AUTHENTIFICATION
 
     @GetMapping("/auth-form")
-    public String getAuthForm(Model model){
-        model.addAttribute("adminDTO",new AdminDTO());
+    public String getAuthForm(Model model) {
+        model.addAttribute("adminDTO", new AdminDTO());
         return "auth-form";
     }
 
     @PostMapping("/signin")
-    public String signIn(@ModelAttribute("adminDTO")AdminDTO adminDTO, Model model, HttpSession session){
+    public String signIn(@ModelAttribute("adminDTO") AdminDTO adminDTO, Model model, HttpSession session) {
         BlogServiceImpl castedService = (BlogServiceImpl) blogService;
-        if(castedService.signInByPasswordAndEmail(adminDTO.getPassword(),adminDTO.getAdminMail())){
-            session.setAttribute("isLogged",true);
+        if (castedService.signInByPasswordAndEmail(adminDTO.getPassword(), adminDTO.getAdminMail())) {
+            session.setAttribute("isLogged", true);
             return "redirect:/";
         } else {
-            session.setAttribute("isLogged",false);
+            session.setAttribute("isLogged", false);
             return "auth-form";
         }
 
     }
 
     @GetMapping("signout")
-    public String signOut(HttpSession session){
-        session.setAttribute("isLogged",false);
+    public String signOut(HttpSession session) {
+        session.setAttribute("isLogged", false);
         return "redirect:/";
     }
-
-
 
 
 }
