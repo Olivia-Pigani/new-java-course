@@ -23,6 +23,10 @@
                 <p class="card-text" th:text="${com.content}"></p>
             </div>
         </div>
+
+        <div th:if="${session.isLogged != null && session.isLogged}">
+            <a th:href="@{/deletecomment/{commentId}(commentId=${com.id})}"><button class="btn btn-danger">Delete</button></a>
+        </div>
     </div>
 </div>
 

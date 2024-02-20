@@ -151,6 +151,13 @@ public class BlogController {
 
     }
 
+    @GetMapping("/deletecomment/{postId}/{commentId}")
+    public String deleteComment (@PathVariable("commentId") UUID commentId, @PathVariable("postId")UUID postId){
+        blogService.deleteCommentary(commentId);
+        return "redirect:/details/" + postId;
+
+    }
+
 
     // AUTHENTIFICATION
 
