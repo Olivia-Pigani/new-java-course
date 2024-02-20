@@ -16,7 +16,7 @@ public interface IBlogService {
 
     public BlogPost saveBlogPost(BlogPost newBlogPost);
 
-    public Optional<BlogPost> getBlogPostById(UUID id);
+    public BlogPost getBlogPostById(UUID id);
 
     public List<BlogPost> getAllBlogPost();
 

@@ -1,9 +1,6 @@
 package com.example.blog_spring_mvc.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -24,7 +21,7 @@ import java.util.UUID;
 public class BlogPost {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
 
@@ -34,7 +31,7 @@ public class BlogPost {
 
     @NotNull(message = "must contain a content")
     @NotBlank
-    @Size(min = 10, max = 20_000)
+    @Size(min = 2, max = 20_000)
     private String postContent;
 
     private String imageUrl;
@@ -46,7 +43,7 @@ public class BlogPost {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date postDate;
 
-
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL)
     private List<Commentary> commentaryList = new ArrayList<>();
 
 

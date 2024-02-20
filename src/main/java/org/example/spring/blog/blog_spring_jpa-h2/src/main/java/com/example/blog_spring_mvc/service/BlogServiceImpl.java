@@ -18,9 +18,6 @@ import java.util.*;
 @Service
 public class BlogServiceImpl implements IBlogService {
 
-//    private final Map<UUID, BlogPost> blogPosts = new LinkedHashMap<>();
-//    private final Map<UUID, Commentary> commentaries = new LinkedHashMap<>();
-
     private final BlogPostRepository blogPostRepository;
     private final CommentaryRepository commentaryRepository;
     private Admin admin;
@@ -37,50 +34,49 @@ public class BlogServiceImpl implements IBlogService {
         System.out.println(admin.toString());
 
 
-        //Fake the database
+        //Fill the database
+
+        BlogPost applePie = BlogPost.builder()
+                .id(UUID.randomUUID())
+                .title("Simple apple pie recipe")
+                .postContent(loadFakeContent("fakecontent.txt"))
+                .postDate(Date.from(Instant.now()))
+                .authorName("Phillipe Etchebest")
+                .imageUrl("/image/apple-pie.jpg")
+                .build();
+
+        BlogPost mochi = BlogPost.builder()
+                .id(UUID.randomUUID())
+                .title("Tea mochi")
+                .postContent(loadFakeContent("fakecontent.txt"))
+                .postDate(Date.from(Instant.now()))
+                .authorName("Kim Oh")
+                .imageUrl("/image/tea-mochi.jpg")
+                .build();
+
+        BlogPost schnecKenKuchen = BlogPost.builder()
+                .id(UUID.randomUUID())
+                .title("Alsacian Schneckenkuchen")
+                .postContent(loadFakeContent("fakecontent.txt"))
+                .postDate(Date.from(Instant.now()))
+                .authorName("Greta Krotz")
+                .imageUrl("/image/german-cake.jpg")
+                .build();
 
 
-//
-//        BlogPost applePie = BlogPost.builder()
-//                .id(UUID.randomUUID())
-//                .title("Simple apple pie recipe")
-//                .postContent(loadFakeContent("fakecontent.txt"))
-//                .postDate(Date.from(Instant.now()))
-//                .authorName("Phillipe Etchebest")
-//                .imageUrl("/image/apple-pie.jpg")
-//                .build();
-//
-//        BlogPost mochi = BlogPost.builder()
-//                .id(UUID.randomUUID())
-//                .title("Tea mochi")
-//                .postContent(loadFakeContent("fakecontent.txt"))
-//                .postDate(Date.from(Instant.now()))
-//                .authorName("Kim Oh")
-//                .imageUrl("/image/tea-mochi.jpg")
-//                .build();
-//
-//        BlogPost schnecKenKuchen = BlogPost.builder()
-//                .id(UUID.randomUUID())
-//                .title("Alsacian Schneckenkuchen")
-//                .postContent(loadFakeContent("fakecontent.txt"))
-//                .postDate(Date.from(Instant.now()))
-//                .authorName("Greta Krotz")
-//                .imageUrl("/image/german-cake.jpg")
-//                .build();
-//
-//
-//        Commentary com1ApplePie = Commentary.builder()
-//                .userName("andré")
-//                .email("andre@gmail.com")
-//                .content("very cool recipe !")
-//                .blogPost(applePie)
-//                .build();
-//
-//
-//        blogPosts.put(applePie.getId(), applePie);
-//        blogPosts.put(mochi.getId(), mochi);
-//        blogPosts.put(schnecKenKuchen.getId(), schnecKenKuchen);
-//        commentaries.put(com1ApplePie.getId(), com1ApplePie);
+        Commentary com1ApplePie = Commentary.builder()
+                .userName("andré")
+                .email("andre@gmail.com")
+                .content("very cool recipe !")
+                .blogPost(applePie)
+                .build();
+
+
+        blogPostRepository.save(applePie);
+        blogPostRepository.save(mochi);
+        blogPostRepository.save(schnecKenKuchen);
+        commentaryRepository.save(com1ApplePie);
+
 
 
     }
@@ -99,25 +95,24 @@ public class BlogServiceImpl implements IBlogService {
 
     @Override
     public BlogPost getBlogPostById(UUID id) {
-//        return blogPosts.values().stream().filter(blogPost -> blogPost.getId().equals(id)).findFirst().orElse(null);
         return blogPostRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<BlogPost> getAllBlogPost() {
-//        return blogPosts.values().stream().toList();
-        blogPostRepository.findAll();
+        return blogPostRepository.findAll();
     }
 
     @Override
     public boolean updateBlogPost(UUID id, BlogPost blogPostToUpdate) {
-        BlogPost blogPostToFind = getBlogPostById(id);
+        BlogPost blogPostToFind = blogPostRepository.findById(id).orElse(null);
         if (blogPostToFind != null) {
             blogPostToFind.setTitle(blogPostToFind.getTitle());
             blogPostToFind.setPostContent(blogPostToUpdate.getPostContent());
             blogPostToFind.setImageUrl(blogPostToFind.getImageUrl());
             blogPostToFind.setAuthorName(blogPostToFind.getAuthorName());
             blogPostToFind.setPostDate(blogPostToUpdate.getPostDate());
+            blogPostRepository.save(blogPostToFind);
 
             return true;
         }
@@ -127,7 +122,6 @@ public class BlogServiceImpl implements IBlogService {
     @Override
     public void deleteBlogPost(UUID id) {
 
-//        blogPosts.remove(id);
         blogPostRepository.deleteById(id);
 
     }
@@ -136,7 +130,6 @@ public class BlogServiceImpl implements IBlogService {
     public Commentary saveCommentary(Commentary newCommentary) {
         if (newCommentary.getId() == null) {
             newCommentary.setId(UUID.randomUUID());
-//            return commentaries.put(newCommentary.getId(), newCommentary);
             return commentaryRepository.save(newCommentary);
         }
 
@@ -145,24 +138,22 @@ public class BlogServiceImpl implements IBlogService {
 
     @Override
     public Commentary getCommentaryById(UUID id) {
-//        return commentaries.values().stream().filter(commentary -> commentary.getId().equals(id)).findFirst().orElse(null);
         return commentaryRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Commentary> getAllCommentary() {
-//        return commentaries.values().stream().toList();
         return commentaryRepository.findAll();
     }
 
     @Override
     public boolean updateCommentary(UUID id, Commentary commentaryToUpdate) {
-        Commentary commentaryToFind = getCommentaryById(id);
+        Commentary commentaryToFind = commentaryRepository.findById(id).orElse(null);
         if (commentaryToFind != null) {
             commentaryToFind.setUserName(commentaryToUpdate.getUserName());
             commentaryToFind.setEmail(commentaryToUpdate.getEmail());
             commentaryToFind.setContent(commentaryToUpdate.getContent());
-
+            commentaryRepository.save(commentaryToFind);
             return true;
         }
 
@@ -171,7 +162,6 @@ public class BlogServiceImpl implements IBlogService {
 
     @Override
     public void deleteCommentary(UUID id) {
-//        commentaries.remove(id);
         commentaryRepository.deleteById(id);
     }
 
@@ -193,13 +183,8 @@ public class BlogServiceImpl implements IBlogService {
 
 
     public List<Commentary> getAllCommentariesByPostId(UUID postId) {
-//        List<Commentary> commentaryList = getAllCommentary();
-//
-//        return commentaryList.stream().filter(commentary -> commentary.getBlogPost() != null && commentary.getBlogPost().getId().equals(postId))
-//                .toList();
 
-
-        return commentaryRepository.find
+        return commentaryRepository.getCommentariesByBlogPost_Id(postId);
 
     }
 

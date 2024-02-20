@@ -1,10 +1,7 @@
 package com.example.blog_spring_mvc.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -19,12 +16,12 @@ import java.util.UUID;
 public class Commentary {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotNull(message = "you must type your username")
     @NotBlank
-    @Size(min = 10,max = 50)
+    @Size(min = 2,max = 50)
     private String userName;
 
 
@@ -35,9 +32,11 @@ public class Commentary {
 
     @NotNull
     @NotBlank
-    @Size(min = 10,max = 500)
+    @Size(min = 2,max = 500)
     private String content;
 
+    @ManyToOne
+    @JoinColumn(name = "blog_post_id")
     private BlogPost blogPost;
 
 }
