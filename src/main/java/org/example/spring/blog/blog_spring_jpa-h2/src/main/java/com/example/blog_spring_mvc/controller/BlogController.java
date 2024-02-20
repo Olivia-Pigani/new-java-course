@@ -44,7 +44,10 @@ public class BlogController {
         return "home";
     }
 
-    // BLOG POST DETAILS
+
+
+
+    // BLOG POST
 
     @GetMapping("/details/{postId}")
     public String getPostDetailsAndCommentaries(@PathVariable("postId") UUID id, Model model) {
@@ -110,6 +113,13 @@ public class BlogController {
                 return "redirect:/";
             }
         }
+    }
+
+
+    @GetMapping("/deletepost/{postId}")
+    public String deleteAPost(@PathVariable("postId") UUID id){
+        blogService.deleteBlogPost(id);
+        return "redirect:/";
     }
 
     // COMMENTARY

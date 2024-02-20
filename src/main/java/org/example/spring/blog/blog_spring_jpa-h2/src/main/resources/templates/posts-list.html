@@ -19,7 +19,19 @@
                 <h5 class="card-title" th:text="${post.title}"></h5>
                 <img th:src="@{${post.imageUrl}} " height="200" width="300" alt="recipe's image">
                 <p class="card-text shrinkedText" th:text="${post.postContent}"></p>
+                <div>
+                    <div>
                 <a th:href="@{/details/{postId}(postId=${post.id})}" class="btn btn-primary">Details</a>
+                    </div>
+                    <div th:if="${session.isLogged != null && session.isLogged}">
+
+                        <a th:href="@{/deletepost/{postId}(postId=${post.id})}" class="btn btn-danger">Delete</a>
+
+
+                    </div>
+
+
+                    </div>
             </div>
         </div>
     </div>
