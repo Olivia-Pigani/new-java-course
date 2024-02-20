@@ -17,7 +17,7 @@
 
     <h1 class="my-4">My blog post</h1>
 
-    <form th:action="@{/addAPost}" th:object="${blogPost}" method="post">
+    <form th:action="@{/addOrUpdateAPost}" th:object="${blogPost}" method="post">
 
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{postDate}">
@@ -44,7 +44,12 @@
             <span th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></span>
         </div>
 
+        <div th:if="${blogPost.getId() == null}">
         <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+        <div th:if="${blogPost.getId() != null}">
+        <button type="submit" class="btn btn-primary">Update</button>
+        </div>
     </form>
 
 

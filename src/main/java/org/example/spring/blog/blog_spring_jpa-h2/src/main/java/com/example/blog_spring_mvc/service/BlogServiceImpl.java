@@ -107,10 +107,10 @@ public class BlogServiceImpl implements IBlogService {
     public boolean updateBlogPost(UUID id, BlogPost blogPostToUpdate) {
         BlogPost blogPostToFind = blogPostRepository.findById(id).orElse(null);
         if (blogPostToFind != null) {
-            blogPostToFind.setTitle(blogPostToFind.getTitle());
+            blogPostToFind.setTitle(blogPostToUpdate.getTitle());
             blogPostToFind.setPostContent(blogPostToUpdate.getPostContent());
-            blogPostToFind.setImageUrl(blogPostToFind.getImageUrl());
-            blogPostToFind.setAuthorName(blogPostToFind.getAuthorName());
+            blogPostToFind.setImageUrl(blogPostToUpdate.getImageUrl());
+            blogPostToFind.setAuthorName(blogPostToUpdate.getAuthorName());
             blogPostToFind.setPostDate(blogPostToUpdate.getPostDate());
             blogPostRepository.save(blogPostToFind);
 

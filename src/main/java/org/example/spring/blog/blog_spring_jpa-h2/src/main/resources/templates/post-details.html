@@ -16,7 +16,9 @@
             <img class="text-center" th:src="${blogPost.imageUrl}" alt="post's details" height="350" width="400">
         </div>
         <h1 class="text-center my-4" th:text="${blogPost.title}"></h1>
-
+        <div th:if="${session.isLogged != null && session.isLogged}">
+        <a th:href="@{/post-form/{blogPostId}(blogPostId=${blogPost.id})}"><button>Update</button></a>
+        </div>
 
         <div class="col-6 offset-md-3 ">
         <p th:text="${blogPost.postContent}"></p>

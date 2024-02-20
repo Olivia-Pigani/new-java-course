@@ -76,15 +76,39 @@ public class BlogController {
 
     }
 
-
-    @PostMapping("/addAPost")
-    public String addAPostLogic(@Valid @ModelAttribute BlogPost blogPost, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("blogPost", blogPost);
-            return "post-form";
+    @GetMapping("/post-form/{blogPostId}")
+    public String showUpdateForm(@PathVariable("blogPostId") UUID id,Model model){
+        BlogPost blogPost = blogService.getBlogPostById(id);
+        if (blogPost != null){
+            model.addAttribute("blogPost",blogPost);
+            return "/post-form";
         }else {
-            blogService.saveBlogPost(blogPost);
             return "redirect:/";
+        }
+    }
+
+
+    @PostMapping("/addOrUpdateAPost")
+    public String addOrUpdateAPostLogic(@Valid @ModelAttribute BlogPost blogPost, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            if (blogPost.getId() != null){
+                model.addAttribute("blogPost", blogPost);
+                return "post-form";
+
+            }else{
+                return "post-form";
+
+            }
+        }else {
+            if (blogPost.getId() != null){
+                blogService.updateBlogPost(blogPost.getId(),blogPost);
+                return "redirect:/";
+
+            }else {
+
+                blogService.saveBlogPost(blogPost);
+                return "redirect:/";
+            }
         }
     }
 
